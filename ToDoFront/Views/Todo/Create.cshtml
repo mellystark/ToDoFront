@@ -1,0 +1,32 @@
+﻿@model ToDoFront.Models.TodoItemModel
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Todo Ekle</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo Ekle</h1>
+        <form asp-action="Create" method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsComplete"></label>
+                <input asp-for="IsComplete" type="checkbox" />
+                <span asp-validation-for="IsComplete" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Ekle</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
