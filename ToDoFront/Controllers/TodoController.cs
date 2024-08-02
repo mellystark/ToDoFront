@@ -51,23 +51,26 @@ namespace ToDoFront.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, TodoItemModel model)
+        public async Task<IActionResult> Edit(int id, bool isComplete)
         {
             if (ModelState.IsValid)
             {
-                var response = await _todoApiService.UpdateTodoAsync(id, model);
-                if (response.IsSuccessStatusCode)
+                var todo = await _todoApiService.GetTodoByIdAsync(id);
+                if (todo != null)
                 {
-                    TempData["SuccessMessage"] = "Todo başarıyla güncellendi.";
-                    return RedirectToAction("Index"); // Başarılı bir şekilde güncelleme yapıldıysa ana sayfaya dön
+                    todo.IsComplete = isComplete;
+                    var response = await _todoApiService.UpdateTodoAsync(id, todo);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return Json(new { success = true });
+                    }
                 }
-                else
-                {
-                    TempData["ErrorMessage"] = "Todo güncellenemedi.";
-                }
+                return Json(new { success = false, message = "Todo güncellenemedi." });
             }
-            return View(model); // Güncelleme işlemi başarısızsa formu tekrar göster
+            return Json(new { success = false, message = "Geçersiz model." });
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)

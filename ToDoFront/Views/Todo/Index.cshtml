@@ -6,106 +6,247 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Todo List</title>
     <style>
+        .container:{
+            width:100%;
+        }
+        .icon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .icon-delete {
+            color: #dc3545; /* Kırmızı renk */
+        }
+
+        .icon-complete {
+            color: #28a745; /* Yeşil renk */
+        }
+
         body {
-            background-color: #f8f9fa;
-            padding: 20px;
+            background: radial-gradient(circle, #94D2FF 0%, white 65%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        .wrapper{
+            margin-top:150px;
         }
 
-        .table-container {
-            margin-top: 50px;
+        .img-container {
+            position: relative;
+            width: 100%;
+            text-align: center; /* Center align the content */
         }
 
-        .table thead th {
-            background-color: #007bff;
-            color: #fff;
+            .img-container img {
+                width: 100%;
+                height: 100%; 
+                display: block;
+                border-radius: 10px;
+            }
+         
+
+        .todo-input-container {
+            margin-top: 10px; /* Add some space between the image and input */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
-        .table tbody tr:nth-child(odd) {
-            background-color: #f2f2f2;
-        }
+            .todo-input-container input[type="text"] {
+                width: 100%; /* Width of the input field */
+                padding: 10px;
+                font-size: 16px;
+                border-radius: 10px;
+                border: 1px solid #ced4da;
+            }
 
-        .table tbody tr:nth-child(even) {
-            background-color: #ffffff;
-        }
+            .todo-input-container button {
+                padding: 10px 20px;
+                margin-left:4px;
+                font-size: 16px;
+                border-radius: 10px;
+                border: 1px solid #ced4da;
+                background-color: #20EEB0;
+                color: white;
+                cursor: pointer;
+            }
 
-        .table td {
-            vertical-align: middle;
-        }
+                .todo-input-container button:hover {
+                    background-color: #218838;
+                }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
-
-        .add-todo-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        .logout-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            width: 100%;
         }
 
         .logout-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #ff0000;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            .logout-button:hover {
+                background-color: #c82333;
+            }
+
+        .list-group {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #ced4da;
+            background-color: #fff;
+        }
+
+            .list-group-item:last-child {
+                border-bottom: none;
+            }
+
+        .complete {
+            background-color: #d4edda;
+        }
+
+        .incomplete-icon {
+            color: #28a745;
+        }
+
+        .complete-icon {
+            color: #dc3545;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logout-button">
-            <button class="btn btn-danger" onclick="handleLogout()">Logout</button>
-        </div>
-        <h1>Todo List</h1>
-        <div class="add-todo-button">
-            <a href="@Url.Action("Create", "Todo")" class="btn btn-success">Todo Ekle</a>
-        </div>
-        <div class="table-container">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Todo Name</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var todo in Model)
-                    {
-                        <tr>
-                            <td>@todo.Name</td>
-                            <td>@(todo.IsComplete ? "Completed" : "Incomplete")</td>
-                            <td>
-                                <!-- Düzenleme butonu -->
-                                <a href="@Url.Action("Edit", "Todo", new { id = todo.Id })" class="btn btn-primary btn-sm">Edit</a>
-
-                                <!-- Silme butonu -->
-                                <form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirmDelete()">
-                                    <input type="hidden" name="id" value="@todo.Id" />
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+  <div class="wrapper">
+    <div class="img-container">
+        <img src="~/todo2.png" alt="Example Image" />
+        <div class="todo-input-container">
+            <input type="text" id="new-todo" placeholder="Yeni bir todo girin...">
+            <button onclick="addTodo()">+</button>
         </div>
     </div>
+
+    <div class="container">
+        <div class="list-group">
+            @foreach (var todo in Model)
+            {
+                <div id="todo-@todo.Id" class="list-group-item @(todo.IsComplete ? "complete" : "")">
+                    <span>@todo.Name</span>
+                    <span>
+                        <!-- Tamamlanmış durumda olan yuvarlak -->
+                        <i class="fas fa-check-circle icon icon-complete @(!todo.IsComplete ? "d-none" : "")" onclick="toggleComplete(@todo.Id, this)"></i>
+
+                        <!-- Tamamlanmamış durumda olan yuvarlak -->
+                        <i class="fas fa-circle icon icon-complete @(todo.IsComplete ? "d-none" : "")" onclick="toggleComplete(@todo.Id, this)"></i>
+
+                        <!-- Silme butonu -->
+                        <i class="fas fa-trash icon icon-delete" onclick="confirmDelete('@todo.Id')"></i>
+                    </span>
+                </div>
+            }
+        </div>
+        <div class="logout-container">
+            <button class="logout-button" onclick="handleLogout()">Logout</button>
+        </div>
+    </div>
+  </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function handleLogout() {
             if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
-                // Logout işlemi sonrasında Home sayfasına yönlendirin
                 window.location.href = '@Url.Action("Index", "Home")';
             }
         }
 
-        function confirmDelete() {
-            return confirm("Bu todo öğesini silmek istediğinizden emin misiniz?");
+        function confirmDelete(todoId) {
+            if (confirm("Bu todo öğesini silmek istediğinizden emin misiniz?")) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Todo")',
+                    type: 'POST',
+                    data: { id: todoId },
+                    success: function () {
+                        location.reload(); // Sayfayı yenileyerek güncellemeyi göster
+                    },
+                    error: function () {
+                        alert('Bir hata oluştu.');
+                    }
+                });
+            }
+        }
+
+        function addTodo() {
+            var newTodo = document.getElementById("new-todo").value;
+            if (newTodo) {
+                // Yeni bir form oluştur
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = '@Url.Action("Create", "Todo")';
+
+                // Input değeri için gizli bir alan oluştur
+                var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "Name";
+                input.value = newTodo;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+
+                form.submit();
+            } else {
+                alert("Lütfen bir todo girin.");
+            }
+        }
+
+        function toggleComplete(todoId, button) {
+            var todoItemElement = document.getElementById("todo-" + todoId);
+            var isComplete = button.classList.contains('fa-circle');
+
+            $.ajax({
+                url: '@Url.Action("Edit", "Todo")',
+                type: 'POST',
+                data: { id: todoId, isComplete: !isComplete },
+                success: function (response) {
+                    if (response.success) {
+                        // Güncellenmiş durumu işleyin
+                        if (isComplete) {
+                            todoItemElement.classList.remove('complete');
+                            button.classList.remove('fa-circle');
+                            button.classList.add('fa-check-circle');
+                        } else {
+                            todoItemElement.classList.add('complete');
+                            button.classList.remove('fa-check-circle');
+                            button.classList.add('fa-circle');
+                        }
+                    } else {
+                        alert(response.message || 'Bir hata oluştu!');
+                    }
+                },
+                error: function () {
+                    alert('Bir hata oluştu!');
+                }
+            });
         }
     </script>
 </body>

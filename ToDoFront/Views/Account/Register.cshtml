@@ -9,7 +9,9 @@
     <title>Kayıt Ol</title>
     <style>
         body {
-            background-color: #f8f9fa;
+            background: radial-gradient(circle, #94D2FF 0%, white 65%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
 
         .container {
@@ -37,7 +39,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Kayıt Ol</h2>
+        <h2>Register</h2>
 
         <form asp-action="Register" method="post">
             <div class="form-group">
@@ -55,7 +57,7 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+            <button type="submit" class="btn btn-primary">Register</button>
 
             <!-- Hata Mesajı -->
             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
@@ -68,7 +70,7 @@
 
         <hr />
 
-        <p>Zaten hesabınız var mı? <a asp-action="Login" controller="Account">Giriş Yapın</a>.</p>
+        <p>Already have an account? <a asp-action="Login" controller="Account">Login</a>.</p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

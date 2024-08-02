@@ -38,7 +38,7 @@ namespace ToDoFront.Controllers
                 // Hatalı giriş durumunda ViewBag ile hata mesajı ekle
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    ViewBag.ErrorMessage = "Giriş başarısız. Kullanıcı adı veya parola yanlış.";
+                    ViewBag.ErrorMessage = "Giriş başarısız. Kullanıcı adı, email ya da parola yanlış.";
                 }
                 else
                 {

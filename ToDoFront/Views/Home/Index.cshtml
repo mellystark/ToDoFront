@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -7,13 +6,38 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Hoşgeldiniz</title>
     <style>
+        .clickable-text {
+            font-size: 1rem;
+            text-decoration: underline;
+            cursor: pointer; /* alias yerine pointer kullanmak daha yaygındır */
+        }
+
         body {
-            background-color: #f8f9fa;
+            background: radial-gradient(circle, #94D2FF 0%, white 65%);
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
+            margin: 0; /* Sayfanın kenar boşluklarını sıfırla */
+            height: 100vh; /* Sayfanın yüksekliği viewport yüksekliğine eşit */
         }
 
         .container {
-            margin-top: 100px;
+            margin-top: 0; /* Merkezi konumlandırmak için margin-top'u sıfırla */
             text-align: center;
+            display: flex;
+            justify-content: center;
+            height: 100%; /* Konteyneri tam yüksekliğe ayarla */
+            flex-direction: column; /* İçerikleri dikey olarak hizala */
+        }
+
+        h1 {
+            color: #041928;
+            font-size: 4.9rem; /* Font boyutuna birim ekle */
+            margin: 0; 
+            font-family: 'Courier New', Courier, monospace;
+            font-weight:bolder;
+        }
+        p{
+            margin-right:300px;
         }
 
         .btn {
@@ -23,10 +47,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>Hoşgeldiniz!</h1>
-        <p>Giriş yapmak için aşağıdaki butona tıklayın.</p>
-        <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Giriş Yap</a>
+        <h1>Welcome to&nbsp;&nbsp;&nbsp;&nbsp;<br>Basic Todo App</h1>
+        <div class="card-body">
+            <p>Useful • Simple • User Friendly <span class="clickable-text" onclick="handleLoginClick()">click here</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        </div>
     </div>
+
+    <script>
+        function handleLoginClick() {
+            window.location.href = '@Url.Action("Login", "Account")';
+        }
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

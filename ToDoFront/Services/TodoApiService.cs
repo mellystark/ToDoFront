@@ -40,7 +40,7 @@ namespace ToDoFront.Services
         }
 
 
-        public async Task<TodoItemModel> GetTodoByIdAsync(int id)
+         public async Task<TodoItemModel> GetTodoByIdAsync(int id)
         {
             return await _httpClient.GetFromJsonAsync<TodoItemModel>($"https://localhost:7191/api/todo/{id}");
         }
